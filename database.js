@@ -14,7 +14,7 @@ const createTableQuery = `
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     price INTEGER,
-    postlocation VARCHAR(100),
+    postLocation VARCHAR(100),
     releaseDate DATE
   );
 `;

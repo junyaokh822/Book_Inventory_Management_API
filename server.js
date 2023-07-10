@@ -26,4 +26,112 @@ function getNextIdFromCollection(collection) {
     res.send("Welcome to the Book_inventory management API!!!!");
   });
 
+
+
+
+
+
+
+
+
+// Get all the jobs
+app.get("/books", async (req, res) => {
+    try {
+      const allbooks = await query("SELECT * FROM book_inventory");
   
+      res.status(200).json(allbooks.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
+  // Get a specific job
+  app.get("/books/:id", async (req, res) => {
+    const bookId = parseInt(req.params.id, 10);
+  
+    try {
+      const book = await query("SELECT * FROM book_inventory WHERE id = $1", [bookId]);
+  
+      if (book.rows.length > 0) {
+        res.status(200).json(book.rows[0]);
+      } else {
+        res.status(404).send({ message: "Book not found" });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
+
+  // Create a new job
+  app.post("/books", async (req, res) => {
+    const { title, price, postLocation, releaseDate } = req.body;
+  
+    try {
+      const newbooks = await query(
+        `INSERT INTO book_inventory (title, price, postLocation, releaseDate) VALUES ($1, $2, $3, $4) RETURNING *`,
+        [title, price, postLocation, releaseDate]
+      );
+        console.log(newbooks);
+      res.status(201).json(newbooks.rows[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
+
+  // Update a specific job
+  app.patch("/books/:id", async (req, res) => {
+    const bookId = parseInt(req.params.id, 10);
+  
+    const fieldNames = [
+      "title",
+      "price",
+      "postLocation",
+      "releaseDate",
+      "bookId",
+    ].filter((name) => req.body[name]);
+  
+    let updatedValues = fieldNames.map(name => req.body[name]);
+    const setValuesSQL = fieldNames.map((name, i) => {
+      return `${name} = $${i + 1}`
+    }).join(', ');
+  
+    try {
+      const UpdatedBooks = await query(
+        `UPDATE book_inventory SET ${setValuesSQL} WHERE id = $${fieldNames.length+1} RETURNING *`,
+        [...updatedValues, bookId]
+      );
+  
+      if (UpdatedBooks.rows.length > 0) {
+        res.status(200).json(UpdatedBooks.rows[0]);
+      } else {
+        res.status(404).send({ message: "Book not found" });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
+  
+  // Delete a specific job
+  app.delete("/books/:id", async (req, res) => {
+    const bookId = parseInt(req.params.id, 10);
+  
+    try {
+      const deleteOp = await query("DELETE FROM book_inventory WHERE id = $1", [bookId]);
+  
+      if (deleteOp.rowCount > 0) {
+        res.status(200).send({ message: "Book deleted successfully" });
+      } else {
+        res.status(404).send({ message: "Book not found" });
+      }
+    }catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
