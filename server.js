@@ -67,12 +67,12 @@ app.get("/books", async (req, res) => {
 
   // Create a new job
   app.post("/books", async (req, res) => {
-    const { title, price, postLocation, releaseDate } = req.body;
+    const { title, price, author, genre, quantity, postLocation, releaseDate } = req.body;
   
     try {
       const newbooks = await query(
-        `INSERT INTO book_inventory (title, price, postLocation, releaseDate) VALUES ($1, $2, $3, $4) RETURNING *`,
-        [title, price, postLocation, releaseDate]
+        `INSERT INTO book_inventory (title, price, author, genre, quantity, postLocation, releaseDate) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+        [title, price, author, genre, quantity, postLocation, releaseDate]
       );
         console.log(newbooks);
       res.status(201).json(newbooks.rows[0]);
@@ -90,6 +90,9 @@ app.get("/books", async (req, res) => {
     const fieldNames = [
       "title",
       "price",
+      "author",
+      "genre",
+      "quantity",
       "postLocation",
       "releaseDate",
       "bookId",

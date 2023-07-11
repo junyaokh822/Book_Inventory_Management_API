@@ -13,6 +13,9 @@ const createTableQuery = `
   CREATE TABLE IF NOT EXISTS book_inventory (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
+    author VARCHAR(100) NOT NULL,
+    genre VARCHAR(100) NOT NULL,
+    quantity INTEGER,
     price INTEGER,
     postLocation VARCHAR(100),
     releaseDate DATE
