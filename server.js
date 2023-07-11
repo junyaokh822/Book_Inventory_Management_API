@@ -34,7 +34,7 @@ function getNextIdFromCollection(collection) {
 
 
 
-// Get all the jobs
+// Get all the books
 app.get("/books", async (req, res) => {
     try {
       const allbooks = await query("SELECT * FROM book_inventory");
@@ -46,7 +46,7 @@ app.get("/books", async (req, res) => {
     }
   });
   
-  // Get a specific job
+  // Get a specific book
   app.get("/books/:id", async (req, res) => {
     const bookId = parseInt(req.params.id, 10);
   
@@ -65,7 +65,7 @@ app.get("/books", async (req, res) => {
   });
   
 
-  // Create a new job
+  // Create a new book
   app.post("/books", async (req, res) => {
     const { title, price, author, genre, quantity, postLocation, releaseDate } = req.body;
   
@@ -83,7 +83,7 @@ app.get("/books", async (req, res) => {
   });
   
 
-  // Update a specific job
+  // Update a specific book
   app.patch("/books/:id", async (req, res) => {
     const bookId = parseInt(req.params.id, 10);
   
@@ -121,7 +121,7 @@ app.get("/books", async (req, res) => {
   });
   
   
-  // Delete a specific job
+  // Delete a specific book
   app.delete("/books/:id", async (req, res) => {
     const bookId = parseInt(req.params.id, 10);
   
