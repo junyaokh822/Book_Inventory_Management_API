@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -18,7 +19,7 @@ const createTableQuery = `
     quantity INTEGER,
     price INTEGER,
     postLocation VARCHAR(100),
-    releaseDate DATE
+    releaseDate DATE Not null
   );
 `;
 

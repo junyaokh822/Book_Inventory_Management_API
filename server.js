@@ -5,7 +5,6 @@ const books = require("./books");
 const { query } = require('./database');
 require("dotenv").config();
 
-
 app.use((req, res, next) => {
   console.log(`Request: ${req.method} ${req.originalUrl}`)
   res.on("finish", () => {
@@ -21,17 +20,10 @@ function getNextIdFromCollection(collection) {
     const lastRecord = collection[collection.length - 1];
     return lastRecord.id + 1;
   }
-
+    console.log()
   app.get("/", (req, res) => {
     res.send("Welcome to the Book_inventory management API!!!!");
   });
-
-
-
-
-
-
-
 
 
 // Get all the books
@@ -138,3 +130,7 @@ app.get("/books", async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   });
+
+  app.listen(4000, function () {
+    console.log('Example app listening on port 8000!');
+   });
